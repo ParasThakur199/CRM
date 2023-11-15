@@ -27,10 +27,18 @@ public class LeadController {
         return new ResponseEntity<>(updatedLead, HttpStatus.OK);
     }
 
+
     @GetMapping("/getAllLeads")
     public ResponseEntity<List<LeadResponseDto>> getAllLeadsHandler(){
         List<LeadResponseDto> getAllLeads = leadService.getAllLeads();
         return new ResponseEntity<>(getAllLeads,HttpStatus.FOUND);
     }
+
+    @DeleteMapping("delete_lead/{leadId}")
+    public ResponseEntity<LeadResponseDto> deleteLead(@PathVariable long leadId) {
+        leadService.deleteLead(leadId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
 }

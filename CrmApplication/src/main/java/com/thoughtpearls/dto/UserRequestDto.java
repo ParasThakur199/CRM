@@ -9,5 +9,5 @@ public class UserRequestDto {
     private String userName;
     private String email;
     private String password;
-    private String dnf;
+//    private String dnf;
 }
