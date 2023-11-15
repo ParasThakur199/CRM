@@ -23,4 +23,13 @@ public class LeadService {
         return leadMapper.entityToDto(savedLead);
     }
 
+    public LeadResponseDto updateLead(long leadId, LeadRequestDto leadRequestDto) {
+        return leadRepository.findById(leadId)
+                .map(lead -> {
+                    leadMapper.updateEntityFromDto(leadRequestDto, lead);
+                    Lead updatedLead = leadRepository.save(lead);
+                    return leadMapper.entityToDto(updatedLead);
+                })
+                .orElse(null);
+    }
 }
