@@ -19,7 +19,7 @@ public class LeadController {
         return new ResponseEntity<>(leadResponseDto, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{leadId}")
+    @PutMapping("/update_lead/{leadId}")
     public ResponseEntity<LeadResponseDto> updateLead(@PathVariable long leadId, @RequestBody LeadRequestDto leadRequestDto) {
         LeadResponseDto updatedLead = leadService.updateLead(leadId, leadRequestDto);
         return new ResponseEntity<>(updatedLead, HttpStatus.OK);
