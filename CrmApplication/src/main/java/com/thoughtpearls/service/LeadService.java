@@ -32,4 +32,8 @@ public class LeadService {
                 })
                 .orElse(null);
     }
+
+    public void deleteLead(long leadId) {
+        leadRepository.deleteById(leadId);
+    }
 }
