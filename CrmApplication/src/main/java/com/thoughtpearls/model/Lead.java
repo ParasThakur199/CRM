@@ -27,11 +27,11 @@ public class Lead extends AbstractClass {
     private Status status;
     @Enumerated(EnumType.STRING)
     private LeadType leadType;
-    private LocalDate reminder_date;
-    private String reminder_topic;
+    private LocalDate reminderDate;
+    private String reminderTopic;
     @OneToMany(mappedBy = "lead")
     private List<Comments> comments;
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userId")
     private User user;
 }
