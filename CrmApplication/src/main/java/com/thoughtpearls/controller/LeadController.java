@@ -25,4 +25,11 @@ public class LeadController {
         return new ResponseEntity<>(updatedLead, HttpStatus.OK);
     }
 
+    @DeleteMapping("delete_lead/{leadId}")
+    public ResponseEntity<LeadResponseDto> deleteLead(@PathVariable long leadId) {
+        leadService.deleteLead(leadId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 }
