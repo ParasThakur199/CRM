@@ -17,13 +17,7 @@ public class Comments {
     private long id;
     private String textField;
     private String created_by;
-    //    @Transient
-//    private String updated_by;
-//    @Transient
-//    private LocalDateTime created_on;
-//    @Transient
-//    private LocalDateTime updated_on;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name="leadId")
     private Lead lead;
 }

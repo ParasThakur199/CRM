@@ -30,9 +30,9 @@ public class Lead extends AbstractClass {
     private LeadType leadType;
     private Date reminderDate;
     private String reminderTopic;
-    @OneToMany(mappedBy = "lead")
+    @OneToMany(mappedBy = "lead",cascade = CascadeType.REMOVE)
     private List<Comments> comments;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "userId")
     private User user;
 }

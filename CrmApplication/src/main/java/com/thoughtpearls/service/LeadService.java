@@ -38,6 +38,7 @@ public class LeadService {
     public List<LeadResponseDto> getAllLeads(){
         List<Lead> leads = leadRepository.findAll();
         return leadMapper.entityToDto(leads);
+    }
 
     public void deleteLead(long leadId) {
         leadRepository.deleteById(leadId);
