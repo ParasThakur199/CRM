@@ -16,7 +16,7 @@ public class Comments {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String textField;
-    private String created_by;
+    private String createdBy;
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name="leadId")
     private Lead lead;

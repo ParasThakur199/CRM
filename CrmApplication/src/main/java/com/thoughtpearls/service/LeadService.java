@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LeadService {
@@ -42,6 +43,10 @@ public class LeadService {
 
     public void deleteLead(long leadId) {
         leadRepository.deleteById(leadId);
+    }
 
+    public Lead findLeadById(long leadId){
+        Optional<Lead> optionalLead =leadRepository.findById(leadId);
+        return optionalLead.orElseThrow(()->new RuntimeException("Lead not present"));
     }
 }

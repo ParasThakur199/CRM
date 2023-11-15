@@ -31,7 +31,7 @@ public class LeadController {
     @GetMapping("/getAllLeads")
     public ResponseEntity<List<LeadResponseDto>> getAllLeadsHandler(){
         List<LeadResponseDto> getAllLeads = leadService.getAllLeads();
-        return new ResponseEntity<>(getAllLeads,HttpStatus.FOUND);
+        return new ResponseEntity<>(getAllLeads, HttpStatus.FOUND);
     }
 
     @DeleteMapping("delete_lead/{leadId}")

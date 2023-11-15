@@ -1,0 +1,23 @@
+[1mdiff --git a/.idea/compiler.xml b/.idea/compiler.xml[m
+[1mindex a4ccff2..2107f16 100644[m
+[1m--- a/.idea/compiler.xml[m
+[1m+++ b/.idea/compiler.xml[m
+[36m@@ -13,6 +13,8 @@[m
+         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />[m
+         <outputRelativeToContentRoot value="true" />[m
+         <processorPath useClasspath="false">[m
+[32m+[m[32m          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />[m
+[32m+[m[32m          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok-mapstruct-binding/0.2.0/lombok-mapstruct-binding-0.2.0.jar" />[m
+           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.5.5.Final/mapstruct-processor-1.5.5.Final.jar" />[m
+           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.5.5.Final/mapstruct-1.5.5.Final.jar" />[m
+         </processorPath>[m
+[36m@@ -25,7 +27,7 @@[m
+   </component>[m
+   <component name="JavacSettings">[m
+     <option name="ADDITIONAL_OPTIONS_OVERRIDE">[m
+[31m-      <module name="CrmApplication" options="-parameters" />[m
+[32m+[m[32m      <module name="CrmApplication" options="-parameters --add-modules java.compiler" />[m
+     </option>[m
+   </component>[m
+ </project>[m
+\ No newline at end of file[m
