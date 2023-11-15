@@ -22,6 +22,6 @@ public class User {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role= Role.User;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.DETACH)
     private List<Lead> leads;
 }
