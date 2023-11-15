@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -16,7 +17,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "`Lead`")
+@Table(name = "Leads")
 public class Lead extends AbstractClass {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +28,7 @@ public class Lead extends AbstractClass {
     private Status status;
     @Enumerated(EnumType.STRING)
     private LeadType leadType;
-    private LocalDate reminderDate;
+    private Date reminderDate;
     private String reminderTopic;
     @OneToMany(mappedBy = "lead")
     private List<Comments> comments;
