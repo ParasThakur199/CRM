@@ -7,6 +7,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface LeadMapper {
     @Mapping(source="leadDescription",target="description")
@@ -22,5 +24,9 @@ public interface LeadMapper {
     @Mapping(source = "leadStatus", target = "status")
     @Mapping(source = "reminderDate", target = "reminderDate", dateFormat = "yyyy-MMM-dd")
     void updateEntityFromDto(LeadRequestDto leadRequestDto, @MappingTarget Lead lead);
+
+    List<LeadResponseDto> entityToDto(List<Lead> leads);
+
+    List<Lead> dtoToEntity(List<LeadResponseDto> leadResponseDtos);
 
 }
