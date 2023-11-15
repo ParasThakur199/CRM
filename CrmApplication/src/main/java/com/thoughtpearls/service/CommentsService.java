@@ -2,11 +2,15 @@ package com.thoughtpearls.service;
 
 import com.thoughtpearls.dto.CommentsRequestDto;
 import com.thoughtpearls.dto.CommentsResponseDto;
+import com.thoughtpearls.dto.LeadResponseDto;
 import com.thoughtpearls.mapper.CommentsMapper;
 import com.thoughtpearls.model.Comments;
+import com.thoughtpearls.model.Lead;
 import com.thoughtpearls.repository.CommentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CommentsService {
@@ -38,5 +42,10 @@ public class CommentsService {
 
     public void deleteCommentById(long commentId){
         commentsRepository.deleteById(commentId);
+    }
+
+    public List<CommentsResponseDto> getAllComments() {
+        List<Comments> comments = commentsRepository.findAll();
+        return commentsMapper.listOfEntitiesToListOfDto(comments);
     }
 }
