@@ -8,6 +8,8 @@ import com.thoughtpearls.repository.LeadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LeadService {
 
@@ -31,5 +33,10 @@ public class LeadService {
                     return leadMapper.entityToDto(updatedLead);
                 })
                 .orElse(null);
+    }
+
+    public List<LeadResponseDto> getAllLeads(){
+        List<Lead> leads = leadRepository.findAll();
+        return leadMapper.entityToDto(leads);
     }
 }
