@@ -23,4 +23,8 @@ public class LeadService {
         return leadMapper.entityToDto(savedLead);
     }
 
+    public void deleteLead(long id){
+        leadRepository.deleteById(id);
+    }
+
 }
