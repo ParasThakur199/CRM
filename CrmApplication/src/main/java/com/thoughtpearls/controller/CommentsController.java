@@ -11,26 +11,27 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/comments")
 public class CommentsController {
 
     @Autowired
     private CommentsService commentsService;
 
-    @PostMapping("/create_comment")
+    @PostMapping("/create")
     public ResponseEntity<CommentsResponseDto> createComment(@RequestBody CommentsRequestDto commentsRequestDto,@RequestParam long leadId) {
         CommentsResponseDto createdComment = commentsService.createComment(commentsRequestDto, leadId);
         return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update_comment/{commentId}")
-    public ResponseEntity<CommentsResponseDto> updateComment(@PathVariable long commentId, @RequestBody CommentsRequestDto commentsRequestDto) {
-        CommentsResponseDto updatedComment = commentsService.updateComment(commentId, commentsRequestDto);
+    @PutMapping("/update/{Id}")
+    public ResponseEntity<CommentsResponseDto> updateComment(@PathVariable long Id, @RequestBody CommentsRequestDto commentsRequestDto) {
+        CommentsResponseDto updatedComment = commentsService.updateComment(Id, commentsRequestDto);
         return new ResponseEntity<>(updatedComment, HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete_comment/{commentId}")
-    public ResponseEntity<String> deleteComment(@PathVariable long commentId) {
-        commentsService.deleteCommentById(commentId);
+    @DeleteMapping("/delete/{Id}")
+    public ResponseEntity<String> deleteComment(@PathVariable long Id) {
+        commentsService.deleteCommentById(Id);
         return new ResponseEntity<>("Comment deleted successfully", HttpStatus.OK);
     }
 
