@@ -2,6 +2,8 @@ package com.thoughtpearls.controller;
 
 import com.thoughtpearls.dto.LeadRequestDto;
 import com.thoughtpearls.dto.LeadResponseDto;
+import com.thoughtpearls.enums.LeadType;
+import com.thoughtpearls.enums.Status;
 import com.thoughtpearls.service.LeadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,5 +42,13 @@ public class LeadController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<LeadResponseDto>> searchLeads(
+            @RequestParam(required = false) String leadName,
+            @RequestParam(required = false) Status leadStatus,
+            @RequestParam(required = false) LeadType leadType) {
+        List<LeadResponseDto> leads = leadService.findLeadsWithFiltering(leadName, leadStatus, leadType);
+        return new ResponseEntity<>(leads,HttpStatus.OK);
+    }
 
 }

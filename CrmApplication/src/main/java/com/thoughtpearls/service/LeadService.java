@@ -2,10 +2,13 @@ package com.thoughtpearls.service;
 
 import com.thoughtpearls.dto.LeadRequestDto;
 import com.thoughtpearls.dto.LeadResponseDto;
+import com.thoughtpearls.enums.LeadType;
+import com.thoughtpearls.enums.Status;
 import com.thoughtpearls.mapper.LeadMapper;
 import com.thoughtpearls.model.Lead;
 import com.thoughtpearls.repository.LeadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,5 +51,24 @@ public class LeadService {
     public Lead findLeadById(long leadId){
         Optional<Lead> optionalLead =leadRepository.findById(leadId);
         return optionalLead.orElseThrow(()->new RuntimeException("Lead not present"));
+    }
+
+    public List<LeadResponseDto> findLeadsWithFiltering(String leadName, Status leadStatus, LeadType leadType){
+        Specification<Lead> specification = Specification.where(null);
+        if(leadName!=null && !leadName.isEmpty()){
+            specification = specification.and((root,query,builder)->
+                    builder.like(builder.lower(root.get("leadName")),"%"+leadName.toLowerCase()+"%"));
+        }
+        if(leadStatus!=null){
+            specification = specification.and((root,query,builder)->
+                    builder.equal(root.get("status"), leadStatus));
+        }
+        if(leadType!=null){
+            specification.and((root,query,builder)->
+                    builder.equal(root.get("leadType"), leadType));
+        }
+        List<Lead> leads = leadRepository.findAll(specification);
+        return leadMapper.entityToDto(leads);
+
     }
 }
