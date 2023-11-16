@@ -13,30 +13,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/lead")
 public class LeadController {
     @Autowired
     private LeadService leadService;
 
-    @PostMapping("/create_lead")
+    @PostMapping("/create")
     public ResponseEntity<LeadResponseDto> createLeadHandler(@RequestBody LeadRequestDto leadRequestDto) {
         LeadResponseDto leadResponseDto = leadService.createLead(leadRequestDto);
         return new ResponseEntity<>(leadResponseDto, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update_lead/{leadId}")
+    @PutMapping("/update/{leadId}")
     public ResponseEntity<LeadResponseDto> updateLeadHandler(@PathVariable long leadId, @RequestBody LeadRequestDto leadRequestDto) {
         LeadResponseDto updatedLead = leadService.updateLead(leadId, leadRequestDto);
         return new ResponseEntity<>(updatedLead, HttpStatus.OK);
     }
 
 
-    @GetMapping("/getAllLeads")
+    @GetMapping("/getAll")
     public ResponseEntity<List<LeadResponseDto>> getAllLeadsHandler(){
         List<LeadResponseDto> getAllLeads = leadService.getAllLeads();
         return new ResponseEntity<>(getAllLeads, HttpStatus.FOUND);
     }
 
-    @DeleteMapping("delete_lead/{leadId}")
+    @DeleteMapping("delete/{leadId}")
     public ResponseEntity<LeadResponseDto> deleteLead(@PathVariable long leadId) {
         leadService.deleteLead(leadId);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -48,6 +49,14 @@ public class LeadController {
             @RequestParam(required = false) Status leadStatus,
             @RequestParam(required = false) LeadType leadType) {
         List<LeadResponseDto> leads = leadService.findLeadsWithFiltering(leadName, leadStatus, leadType);
+        return new ResponseEntity<>(leads,HttpStatus.OK);
+    }
+
+    @GetMapping("/sort")
+    public ResponseEntity<List<LeadResponseDto>> sortLeads(@RequestParam(defaultValue = "0") Integer pageNo,
+                                                           @RequestParam(defaultValue = "2") Integer pageSize,
+                                                           @RequestParam(defaultValue = "id") String sortBy){
+        List<LeadResponseDto> leads = leadService.sortLeads(pageNo, pageSize, sortBy);
         return new ResponseEntity<>(leads,HttpStatus.OK);
     }
 

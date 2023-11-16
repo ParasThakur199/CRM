@@ -8,9 +8,14 @@ import com.thoughtpearls.mapper.LeadMapper;
 import com.thoughtpearls.model.Lead;
 import com.thoughtpearls.repository.LeadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,6 +74,15 @@ public class LeadService {
         }
         List<Lead> leads = leadRepository.findAll(specification);
         return leadMapper.entityToDto(leads);
+    }
+    public List<LeadResponseDto> sortLeads(Integer pageNo, Integer pageSize, String sortBy){
+        Pageable paging= PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<Lead> pagedResult=leadRepository.findAll(paging);
 
+        if(pagedResult.hasContent()) {
+            return leadMapper.entityToDto(pagedResult.getContent());
+        } else {
+            return new ArrayList<LeadResponseDto>();
+        }
     }
 }
