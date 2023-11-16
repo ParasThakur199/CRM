@@ -16,6 +16,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,7 +70,7 @@ public class LeadService {
                     builder.equal(root.get("status"), leadStatus));
         }
         if(leadType!=null){
-            specification.and((root,query,builder)->
+            specification=specification.and((root,query,builder)->
                     builder.equal(root.get("leadType"), leadType));
         }
         List<Lead> leads = leadRepository.findAll(specification);
