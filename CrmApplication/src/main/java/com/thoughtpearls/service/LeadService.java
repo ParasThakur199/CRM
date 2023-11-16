@@ -69,7 +69,7 @@ public class LeadService {
                     builder.equal(root.get("status"), leadStatus));
         }
         if(leadType!=null){
-            specification.and((root,query,builder)->
+            specification = specification.and((root,query,builder)->
                     builder.equal(root.get("leadType"), leadType));
         }
         List<Lead> leads = leadRepository.findAll(specification);
