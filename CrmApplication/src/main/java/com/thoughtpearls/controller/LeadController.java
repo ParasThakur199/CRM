@@ -44,21 +44,32 @@ public class LeadController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<LeadResponseDto>> searchLeads(
-            @RequestParam(required = false) String leadName,
-            @RequestParam(required = false) Status leadStatus,
-            @RequestParam(required = false) LeadType leadType){
-        List<LeadResponseDto> leads = leadService.findLeadsWithFiltering(leadName, leadStatus, leadType);
-        return new ResponseEntity<>(leads,HttpStatus.OK);
-    }
+//    @GetMapping("/search")
+//    public ResponseEntity<List<LeadResponseDto>> searchLeads(
+//            @RequestParam(required = false) String leadName,
+//            @RequestParam(required = false) Status leadStatus,
+//            @RequestParam(required = false) LeadType leadType){
+//        List<LeadResponseDto> leads = leadService.findLeadsWithFiltering(leadName, leadStatus, leadType);
+//        return new ResponseEntity<>(leads,HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/sort")
+//    public ResponseEntity<List<LeadResponseDto>> sortLeads(@RequestParam(defaultValue = "0") Integer pageNo,
+//                                                           @RequestParam(defaultValue = "2") Integer pageSize,
+//                                                           @RequestParam(defaultValue = "id") String sortBy){
+//        List<LeadResponseDto> leads = leadService.sortLeads(pageNo, pageSize, sortBy);
+//        return new ResponseEntity<>(leads,HttpStatus.OK);
+//    }
+        @GetMapping("/findandsort")
+        public List<LeadResponseDto> findAndSortLeads(
+                @RequestParam(required = false) String input,
+//                @RequestParam(required = false) Status leadStatus,
+//                @RequestParam(required = false) LeadType leadType,
+                @RequestParam(defaultValue = "0") Integer pageNo,
+                @RequestParam(defaultValue = "2") Integer pageSize,
+                @RequestParam(defaultValue = "id") String sortBy) {
 
-    @GetMapping("/sort")
-    public ResponseEntity<List<LeadResponseDto>> sortLeads(@RequestParam(defaultValue = "0") Integer pageNo,
-                                                           @RequestParam(defaultValue = "2") Integer pageSize,
-                                                           @RequestParam(defaultValue = "id") String sortBy){
-        List<LeadResponseDto> leads = leadService.sortLeads(pageNo, pageSize, sortBy);
-        return new ResponseEntity<>(leads,HttpStatus.OK);
-    }
+            return leadService.findAndSortLeads(input, pageNo, pageSize, sortBy);
+        }
 
 }
