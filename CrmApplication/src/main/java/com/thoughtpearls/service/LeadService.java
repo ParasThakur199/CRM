@@ -45,10 +45,6 @@ public class LeadService {
                 .orElse(null);
     }
 
-    public List<LeadResponseDto> getAllLeads(){
-        List<Lead> leads = leadRepository.findAll();
-        return leadMapper.entityToDto(leads);
-    }
 
     public void deleteLead(long leadId) {
         leadRepository.deleteById(leadId);
@@ -70,7 +66,8 @@ public class LeadService {
                     builder.equal(root.get("status"), leadStatus));
         }
         if(leadType!=null){
-            specification=specification.and((root,query,builder)->
+
+            specification = specification.and((root,query,builder)->
                     builder.equal(root.get("leadType"), leadType));
         }
         List<Lead> leads = leadRepository.findAll(specification);
@@ -85,5 +82,10 @@ public class LeadService {
         } else {
             return new ArrayList<LeadResponseDto>();
         }
+    }
+
+    public Page<LeadResponseDto> getAllLeads(int page, int size) {
+        Page<Lead> leadsPage = leadRepository.findAll(PageRequest.of(page, size));
+        return leadsPage.map(leadMapper::entityToDto);
     }
 }
