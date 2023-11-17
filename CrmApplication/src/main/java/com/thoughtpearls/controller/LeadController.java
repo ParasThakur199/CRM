@@ -39,6 +39,7 @@ public class LeadController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+
 //    @GetMapping("/search")
 //    public ResponseEntity<List<LeadResponseDto>> searchLeads(
 //            @RequestParam(required = false) String leadName,
@@ -73,6 +74,7 @@ public class LeadController {
     List<LeadResponseDto> leads = leadService.getAllLeads(pageNo, pageSize, sortBy);
     return new ResponseEntity<>(leads,HttpStatus.OK);
 }
+
 
 
     @PostMapping("/searching")

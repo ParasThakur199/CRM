@@ -68,6 +68,7 @@ public class LeadService {
                     builder.equal(root.get("status"), leadStatus));
         }
         if(leadType!=null){
+
             specification = specification.and((root,query,builder)->
                     builder.equal(root.get("leadType"), leadType));
         }
