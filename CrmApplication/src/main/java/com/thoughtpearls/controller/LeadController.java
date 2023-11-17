@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -41,7 +42,7 @@ public class LeadController {
     public ResponseEntity<List<LeadResponseDto>> searchLeads(
             @RequestParam(required = false) String leadName,
             @RequestParam(required = false) Status leadStatus,
-            @RequestParam(required = false) LeadType leadType) {
+            @RequestParam(required = false) LeadType leadType){
         List<LeadResponseDto> leads = leadService.findLeadsWithFiltering(leadName, leadStatus, leadType);
         return new ResponseEntity<>(leads,HttpStatus.OK);
     }
