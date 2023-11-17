@@ -2,6 +2,7 @@ package com.thoughtpearls.controller;
 
 import com.thoughtpearls.dto.LeadRequestDto;
 import com.thoughtpearls.dto.LeadResponseDto;
+import com.thoughtpearls.dto.SearchParametersDto;
 import com.thoughtpearls.enums.LeadType;
 import com.thoughtpearls.enums.Status;
 import com.thoughtpearls.service.LeadService;
@@ -38,28 +39,46 @@ public class LeadController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<LeadResponseDto>> searchLeads(
-            @RequestParam(required = false) String leadName,
-            @RequestParam(required = false) Status leadStatus,
-            @RequestParam(required = false) LeadType leadType){
-        List<LeadResponseDto> leads = leadService.findLeadsWithFiltering(leadName, leadStatus, leadType);
-        return new ResponseEntity<>(leads,HttpStatus.OK);
-    }
 
-    @GetMapping("/sort")
-    public ResponseEntity<List<LeadResponseDto>> sortLeads(@RequestParam(defaultValue = "0") Integer pageNo,
-                                                           @RequestParam(defaultValue = "2") Integer pageSize,
-                                                           @RequestParam(defaultValue = "id") String sortBy){
-        List<LeadResponseDto> leads = leadService.sortLeads(pageNo, pageSize, sortBy);
-        return new ResponseEntity<>(leads,HttpStatus.OK);
-    }
-
+//    @GetMapping("/search")
+//    public ResponseEntity<List<LeadResponseDto>> searchLeads(
+//            @RequestParam(required = false) String leadName,
+//            @RequestParam(required = false) Status leadStatus,
+//            @RequestParam(required = false) LeadType leadType){
+//        List<LeadResponseDto> leads = leadService.findLeadsWithFiltering(leadName, leadStatus, leadType);
+//        return new ResponseEntity<>(leads,HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/sort")
+//    public ResponseEntity<List<LeadResponseDto>> sortLeads(@RequestParam(defaultValue = "0") Integer pageNo,
+//                                                           @RequestParam(defaultValue = "2") Integer pageSize,
+//                                                           @RequestParam(defaultValue = "id") String sortBy){
+//        List<LeadResponseDto> leads = leadService.sortLeads(pageNo, pageSize, sortBy);
+//        return new ResponseEntity<>(leads,HttpStatus.OK);
+//    }
+//        @GetMapping("/findandsort")
+//        public List<LeadResponseDto> findAndSortLeads(
+//                @RequestParam(required = false) String input,
+////                @RequestParam(required = false) Status leadStatus,
+////                @RequestParam(required = false) LeadType leadType,
+//                @RequestParam(defaultValue = "0") Integer pageNo,
+//                @RequestParam(defaultValue = "2") Integer pageSize,
+//                @RequestParam(defaultValue = "id") String sortBy) {
+//
+//            return leadService.findAndSortLeads(input, pageNo, pageSize, sortBy);
+//        }
     @GetMapping("/getAll")
-    public Page<LeadResponseDto> getLeads(
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size) {
-        return leadService.getAllLeads(page, size);
-    }
+    public ResponseEntity<List<LeadResponseDto>> getAllLeadsHandler(@RequestParam(defaultValue = "0") Integer pageNo,
+                                                       @RequestParam(defaultValue = "2") Integer pageSize,
+                                                       @RequestParam(defaultValue = "id") String sortBy){
+    List<LeadResponseDto> leads = leadService.getAllLeads(pageNo, pageSize, sortBy);
+    return new ResponseEntity<>(leads,HttpStatus.OK);
+}
 
+
+
+    @PostMapping("/searching")
+    public ResponseEntity<Page<LeadResponseDto>> searchListWithList(@RequestBody SearchParametersDto searchParametersDto) {
+        return ResponseEntity.ok(leadService.searchAndFilterInLead(searchParametersDto));
+    }
 }
