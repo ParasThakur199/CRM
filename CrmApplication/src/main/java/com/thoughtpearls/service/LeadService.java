@@ -44,10 +44,6 @@ public class LeadService {
                 .orElse(null);
     }
 
-    public List<LeadResponseDto> getAllLeads(){
-        List<Lead> leads = leadRepository.findAll();
-        return leadMapper.entityToDto(leads);
-    }
 
     public void deleteLead(long leadId) {
         leadRepository.deleteById(leadId);
@@ -84,5 +80,10 @@ public class LeadService {
         } else {
             return new ArrayList<LeadResponseDto>();
         }
+    }
+
+    public Page<LeadResponseDto> getAllLeads(int page, int size) {
+        Page<Lead> leadsPage = leadRepository.findAll(PageRequest.of(page, size));
+        return leadsPage.map(leadMapper::entityToDto);
     }
 }

@@ -6,6 +6,7 @@ import com.thoughtpearls.enums.LeadType;
 import com.thoughtpearls.enums.Status;
 import com.thoughtpearls.service.LeadService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,13 +31,6 @@ public class LeadController {
         return new ResponseEntity<>(updatedLead, HttpStatus.OK);
     }
 
-
-    @GetMapping("/getAll")
-    public ResponseEntity<List<LeadResponseDto>> getAllLeadsHandler(){
-        List<LeadResponseDto> getAllLeads = leadService.getAllLeads();
-        return new ResponseEntity<>(getAllLeads, HttpStatus.FOUND);
-    }
-
     @DeleteMapping("delete/{leadId}")
     public ResponseEntity<LeadResponseDto> deleteLead(@PathVariable long leadId) {
         leadService.deleteLead(leadId);
@@ -58,6 +52,13 @@ public class LeadController {
                                                            @RequestParam(defaultValue = "id") String sortBy){
         List<LeadResponseDto> leads = leadService.sortLeads(pageNo, pageSize, sortBy);
         return new ResponseEntity<>(leads,HttpStatus.OK);
+    }
+
+    @GetMapping("/getAll")
+    public Page<LeadResponseDto> getLeads(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size) {
+        return leadService.getAllLeads(page, size);
     }
 
 }
