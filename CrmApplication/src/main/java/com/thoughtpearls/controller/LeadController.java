@@ -66,13 +66,14 @@ public class LeadController {
 //
 //            return leadService.findAndSortLeads(input, pageNo, pageSize, sortBy);
 //        }
-
     @GetMapping("/getAll")
-    public Page<LeadResponseDto> getLeads(
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size) {
-        return leadService.getAllLeads(page, size);
-    }
+    public ResponseEntity<List<LeadResponseDto>> getAllLeadsHandler(@RequestParam(defaultValue = "0") Integer pageNo,
+                                                       @RequestParam(defaultValue = "2") Integer pageSize,
+                                                       @RequestParam(defaultValue = "id") String sortBy){
+    List<LeadResponseDto> leads = leadService.getAllLeads(pageNo, pageSize, sortBy);
+    return new ResponseEntity<>(leads,HttpStatus.OK);
+}
+
 
     @PostMapping("/searching")
     public ResponseEntity<Page<LeadResponseDto>> searchListWithList(@RequestBody SearchParametersDto searchParametersDto) {

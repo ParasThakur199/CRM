@@ -10,10 +10,7 @@ import com.thoughtpearls.model.Lead;
 import com.thoughtpearls.repository.LeadRepository;
 import com.thoughtpearls.specification.LeadSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -107,6 +104,7 @@ public class LeadService {
 //            return new ArrayList<LeadResponseDto>();
 //        }
 //    }
+
 //        public List<LeadResponseDto> findAndSortLeads(String input, Integer pageNo, Integer pageSize, String sortBy) {
 //            try{
 //            Specification<Lead> specification = Specification.where(null);
@@ -150,19 +148,26 @@ public class LeadService {
 //            throw new RuntimeException("Invalid input for leadID :"+input);
 //            }
 //    }
-    private <E extends Enum<E>> boolean isEnumValueValid(Class<E> enumClass, String value) {
-        try {
-            Enum.valueOf(enumClass, value.toUpperCase());
-            return true;
-        } catch (IllegalArgumentException ex) {
-            return false;
-        }
-    }
 
-    public Page<LeadResponseDto> getAllLeads(int page, int size) {
-        Page<Lead> leadsPage = leadRepository.findAll(PageRequest.of(page, size));
-        return leadsPage.map(leadMapper::entityToDto);
+//    private <E extends Enum<E>> boolean isEnumValueValid(Class<E> enumClass, String value) {
+//        try {
+//            Enum.valueOf(enumClass, value.toUpperCase());
+//            return true;
+//        } catch (IllegalArgumentException ex) {
+//            return false;
+//        }
+//    }
+
+public List<LeadResponseDto> getAllLeads(Integer pageNo, Integer pageSize, String sortBy){
+    Pageable paging= PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+    Page<Lead> pagedResult=leadRepository.findAll(paging);
+
+    if(pagedResult.hasContent()) {
+        return leadMapper.entityToDto(pagedResult.getContent());
+    } else {
+        return new ArrayList<LeadResponseDto>();
     }
+}
 
     public Page<LeadResponseDto> searchAndFilterInLead(final SearchParametersDto searchParametersDto) {
         try {
