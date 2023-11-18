@@ -30,22 +30,22 @@ public class CommentsService {
         return commentsMapper.entityToDto(savedComment);
     }
 
-    public CommentsResponseDto updateComment(long commentId, CommentsRequestDto commentsRequestDto) {
-        return commentsRepository.findById(commentId)
-                .map(existingComment -> {
-                    commentsMapper.updateEntityFromDto(commentsRequestDto, existingComment);
-                    Comments updatedComment = commentsRepository.save(existingComment);
-                    return commentsMapper.entityToDto(updatedComment);
-                })
-                .orElseThrow(()->new RuntimeException("No Comments present"));
-    }
+//    public CommentsResponseDto updateComment(long commentId, CommentsRequestDto commentsRequestDto) {
+//        return commentsRepository.findById(commentId)
+//                .map(existingComment -> {
+//                    commentsMapper.updateEntityFromDto(commentsRequestDto, existingComment);
+//                    Comments updatedComment = commentsRepository.save(existingComment);
+//                    return commentsMapper.entityToDto(updatedComment);
+//                })
+//                .orElseThrow(()->new RuntimeException("No Comments present"));
+//    }
 
     public void deleteCommentById(long commentId){
         commentsRepository.deleteById(commentId);
     }
 
     public List<CommentsResponseDto> getAllComments() {
-        List<Comments> comments = commentsRepository.findAll();
+        List<Comments> comments = commentsRepository.findAllByOrderByCreatedOnDesc();
         return commentsMapper.listOfEntitiesToListOfDto(comments);
     }
 }

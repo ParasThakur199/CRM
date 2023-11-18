@@ -18,16 +18,16 @@ public class CommentsController {
     private CommentsService commentsService;
 
     @PostMapping("/create")
-    public ResponseEntity<CommentsResponseDto> createComment(@RequestBody CommentsRequestDto commentsRequestDto,@RequestParam long leadId) {
+    public ResponseEntity<CommentsResponseDto> createComment(@RequestBody CommentsRequestDto commentsRequestDto,@PathVariable long leadId) {
         CommentsResponseDto createdComment = commentsService.createComment(commentsRequestDto, leadId);
         return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{Id}")
-    public ResponseEntity<CommentsResponseDto> updateComment(@PathVariable long Id, @RequestBody CommentsRequestDto commentsRequestDto) {
-        CommentsResponseDto updatedComment = commentsService.updateComment(Id, commentsRequestDto);
-        return new ResponseEntity<>(updatedComment, HttpStatus.OK);
-    }
+//    @PutMapping("/update/{Id}")
+//    public ResponseEntity<CommentsResponseDto> updateComment(@PathVariable long Id, @RequestBody CommentsRequestDto commentsRequestDto) {
+//        CommentsResponseDto updatedComment = commentsService.updateComment(Id, commentsRequestDto);
+//        return new ResponseEntity<>(updatedComment, HttpStatus.OK);
+//    }
 
     @DeleteMapping("/delete/{Id}")
     public ResponseEntity<String> deleteComment(@PathVariable long Id) {

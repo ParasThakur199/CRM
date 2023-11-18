@@ -53,4 +53,10 @@ public class LeadController {
     public ResponseEntity<Page<LeadResponseDto>> searchListWithList(@RequestBody SearchParametersDto searchParametersDto) {
         return ResponseEntity.ok(leadService.searchAndFilterInLead(searchParametersDto));
     }
+
+    @GetMapping("/{leadId}")
+    public ResponseEntity<LeadResponseDto> getLeadById(@PathVariable long leadId) {
+            LeadResponseDto leadResponseDto = leadService.getLeadById(leadId);
+            return new ResponseEntity<>(leadResponseDto, HttpStatus.OK);
+    }
 }
