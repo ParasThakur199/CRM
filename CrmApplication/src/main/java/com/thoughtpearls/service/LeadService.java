@@ -89,4 +89,10 @@ public List<LeadResponseDto> getAllLeads(Integer pageNo, Integer pageSize, Strin
             throw new RuntimeException("Invalid input for lead parameters", e);
         }
     }
+
+    public LeadResponseDto getLeadById(long leadId) {
+        return leadRepository.findById(leadId)
+                .map(leadMapper::entityToDto)
+                .orElseThrow(() -> new RuntimeException("Lead not found with id: " + leadId));
+    }
 }
