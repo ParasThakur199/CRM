@@ -11,12 +11,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Comments {
+public class Comments extends AuditableAbstractClass {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String textField;
-    private String createdBy;
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name="leadId")
     private Lead lead;
