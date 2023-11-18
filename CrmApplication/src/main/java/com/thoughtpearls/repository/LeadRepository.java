@@ -10,6 +10,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LeadRepository extends JpaRepository<Lead,Long>, JpaSpecificationExecutor<Lead>{
+public interface LeadRepository extends JpaRepository<Lead,Long>, JpaSpecificationExecutor<Lead>,PagingAndSortingRepository<Lead,Long>{
 
 }

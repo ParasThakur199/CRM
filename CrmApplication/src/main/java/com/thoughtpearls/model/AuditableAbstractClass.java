@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
-public abstract class AbstractClass {
-    private String createdBy;
-    private String updatedBy;
+public abstract class AuditableAbstractClass {
+    private long createdBy;
+    private long updatedBy;
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;
 }
