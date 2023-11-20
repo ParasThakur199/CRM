@@ -23,6 +23,7 @@ public class Lead extends AuditableAbstractClass {
     private long id;
     private String leadName;
     private String description;
+    private String link;
     @Enumerated(EnumType.STRING)
     private Status status;
     @Enumerated(EnumType.STRING)

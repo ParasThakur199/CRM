@@ -22,14 +22,14 @@ public class LeadController {
     private LeadService leadService;
 
     @PostMapping("/create")
-    public ResponseEntity<LeadResponseDto> createLeadHandler(@RequestBody LeadRequestDto leadRequestDto) {
-        LeadResponseDto leadResponseDto = leadService.createLead(leadRequestDto);
+    public ResponseEntity<LeadResponseDto> createLeadHandler(@RequestBody LeadRequestDto leadRequestDto, @RequestParam String token) {
+        LeadResponseDto leadResponseDto = leadService.createLead(leadRequestDto,token);
         return new ResponseEntity<>(leadResponseDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{leadId}")
-    public ResponseEntity<LeadResponseDto> updateLeadHandler(@PathVariable long leadId, @RequestBody LeadRequestDto leadRequestDto) {
-        LeadResponseDto updatedLead = leadService.updateLead(leadId, leadRequestDto);
+    public ResponseEntity<LeadResponseDto> updateLeadHandler(@PathVariable long leadId, @RequestBody LeadRequestDto leadRequestDto,@RequestParam String token) {
+        LeadResponseDto updatedLead = leadService.updateLead(leadId, leadRequestDto,token);
         return new ResponseEntity<>(updatedLead, HttpStatus.OK);
     }
 

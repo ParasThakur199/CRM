@@ -18,4 +18,5 @@ public class LeadRequestDto {
     private LeadType leadType;
     private Date reminderDate;
     private String reminderTopic;
+    private String link;
 }

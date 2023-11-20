@@ -1,12 +1,12 @@
 package com.thoughtpearls.service;
 
+import com.thoughtpearls.config.JwtService;
 import com.thoughtpearls.dto.LeadRequestDto;
 import com.thoughtpearls.dto.LeadResponseDto;
 import com.thoughtpearls.dto.SearchParametersDto;
-import com.thoughtpearls.enums.LeadType;
-import com.thoughtpearls.enums.Status;
 import com.thoughtpearls.mapper.LeadMapper;
 import com.thoughtpearls.model.Lead;
+import com.thoughtpearls.model.User;
 import com.thoughtpearls.repository.LeadRepository;
 import com.thoughtpearls.specification.LeadSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,8 @@ import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,16 +31,26 @@ public class LeadService {
     @Autowired
     private LeadMapper leadMapper;
 
-    public LeadResponseDto createLead(LeadRequestDto leadRequestDto) {
+    @Autowired
+    private JwtService jwtService;
+
+    public LeadResponseDto createLead(LeadRequestDto leadRequestDto,String token) {
+        User user=jwtService.getUserDetailsFromToken(token);
         Lead lead = leadMapper.dtoToEntity(leadRequestDto);
+        lead.setCreatedBy(user.getId());
+        lead.setCreatedOn(LocalDateTime.now());
+        lead.setUser(user);
         Lead savedLead = leadRepository.save(lead);
         return leadMapper.entityToDto(savedLead);
     }
 
-    public LeadResponseDto updateLead(long leadId, LeadRequestDto leadRequestDto) {
+    public LeadResponseDto updateLead(long leadId, LeadRequestDto leadRequestDto,String token) {
+        User user=jwtService.getUserDetailsFromToken(token);
         return leadRepository.findById(leadId)
                 .map(lead -> {
                     leadMapper.updateEntityFromDto(leadRequestDto, lead);
+                    lead.setUpdatedOn(LocalDateTime.now());
+                    lead.setUpdatedBy(user.getId());
                     Lead updatedLead = leadRepository.save(lead);
                     return leadMapper.entityToDto(updatedLead);
                 })

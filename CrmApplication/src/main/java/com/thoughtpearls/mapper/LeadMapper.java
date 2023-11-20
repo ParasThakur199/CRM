@@ -23,7 +23,7 @@ public interface LeadMapper {
     @Mapping(source = "leadDescription", target = "description")
     @Mapping(source = "leadStatus", target = "status")
     @Mapping(source = "reminderDate", target = "reminderDate", dateFormat = "yyyy-MMM-dd")
-    void updateEntityFromDto(LeadRequestDto leadRequestDto, @MappingTarget Lead lead);
+    Lead updateEntityFromDto(LeadRequestDto leadRequestDto, @MappingTarget Lead lead);
 
     List<LeadResponseDto> entityToDto(List<Lead> leads);
 
