@@ -9,4 +9,5 @@ public class CommentsResponseDto {
     private long id;
     private String textField;
     private String createdBy;
+    private String createdOn;
 }

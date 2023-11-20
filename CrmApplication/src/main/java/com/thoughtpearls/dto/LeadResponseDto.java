@@ -16,6 +16,7 @@ public class LeadResponseDto {
     private String leadDescription;
     private String createdBy;
     private String updatedBy;
+    private String link;
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;
     private Status leadStatus;
