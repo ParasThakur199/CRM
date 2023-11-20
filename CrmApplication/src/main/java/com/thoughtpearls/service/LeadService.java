@@ -8,14 +8,19 @@ import com.thoughtpearls.mapper.LeadMapper;
 import com.thoughtpearls.model.Lead;
 import com.thoughtpearls.model.User;
 import com.thoughtpearls.repository.LeadRepository;
+import com.thoughtpearls.sendemail.EmailService;
 import com.thoughtpearls.specification.LeadSpecification;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -104,5 +109,21 @@ public List<LeadResponseDto> getAllLeads(Integer pageNo, Integer pageSize, Strin
         return leadRepository.findById(leadId)
                 .map(leadMapper::entityToDto)
                 .orElseThrow(() -> new RuntimeException("Lead not found with id: " + leadId));
+    }
+
+    @Autowired
+    private EmailService emailService;
+
+    @Scheduled(cron = "0 0 8 * * ?")
+    public void sendReminderEmails() {
+        Date currentDate = new Date();
+        List<Lead> leadsWithUpcomingReminders = leadRepository.findByReminderDate(currentDate);
+    System.out.println("executed");
+        for (Lead lead : leadsWithUpcomingReminders) {
+            String to = lead.getUser().getEmail(); // Assuming User has an email property
+            String subject = "Reminder About your Lead: " + lead.getLeadName();
+            String body = "Reminder Topic: " + lead.getReminderTopic();
+            emailService.sendReminderEmail(to, subject, body);
+        }
     }
 }

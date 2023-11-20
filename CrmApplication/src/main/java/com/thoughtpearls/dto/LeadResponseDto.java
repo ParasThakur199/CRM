@@ -2,6 +2,8 @@ package com.thoughtpearls.dto;
 
 import com.thoughtpearls.enums.LeadType;
 import com.thoughtpearls.enums.Status;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,5 +24,6 @@ public class LeadResponseDto {
     private Status leadStatus;
     private LeadType leadType;
     private Date reminderDate;
+    @Temporal(TemporalType.DATE)
     private String reminderTopic;
 }
