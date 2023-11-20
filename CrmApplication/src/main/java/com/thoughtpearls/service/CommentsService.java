@@ -8,9 +8,14 @@ import com.thoughtpearls.model.Comments;
 import com.thoughtpearls.model.User;
 import com.thoughtpearls.repository.CommentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,8 +46,13 @@ public class CommentsService {
         commentsRepository.deleteById(commentId);
     }
 
-    public List<CommentsResponseDto> getAllComments() {
-        List<Comments> comments = commentsRepository.findAllByOrderByCreatedOnDesc();
-        return commentsMapper.listOfEntitiesToListOfDto(comments);
+    public List<CommentsResponseDto> getAllComments(Integer pageNo, Integer pageSize, String sortBy) {
+        Pageable paging= PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<Comments> pagedResult=commentsRepository.findAll(paging);
+        if(pagedResult.hasContent()) {
+            return commentsMapper.listOfEntitiesToListOfDto(pagedResult.getContent());
+        } else {
+            return new ArrayList<CommentsResponseDto>();
+        }
     }
 }
