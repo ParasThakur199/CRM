@@ -4,6 +4,7 @@ import com.thoughtpearls.dto.AuthenticationResponse;
 import com.thoughtpearls.dto.SignInDto;
 import com.thoughtpearls.dto.UserRequestDto;
 import com.thoughtpearls.service.UserService;
+import com.thoughtpearls.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

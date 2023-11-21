@@ -3,16 +3,14 @@ package com.thoughtpearls.controller;
 import com.thoughtpearls.dto.LeadRequestDto;
 import com.thoughtpearls.dto.LeadResponseDto;
 import com.thoughtpearls.dto.SearchParametersDto;
-import com.thoughtpearls.enums.LeadType;
-import com.thoughtpearls.enums.Status;
 import com.thoughtpearls.service.LeadService;
+import com.thoughtpearls.service.impl.LeadServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController

@@ -3,6 +3,7 @@ package com.thoughtpearls.controller;
 import com.thoughtpearls.dto.CommentsRequestDto;
 import com.thoughtpearls.dto.CommentsResponseDto;
 import com.thoughtpearls.service.CommentsService;
+import com.thoughtpearls.service.impl.CommentsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,10 +36,6 @@ public class CommentsController {
         return new ResponseEntity<>("Comment deleted successfully", HttpStatus.OK);
     }
 
-    @GetMapping("/getAll")
-    public ResponseEntity<List<CommentsResponseDto>> getAllComments() {
-        List<CommentsResponseDto> comments = commentsService.getAllComments();
-        return new ResponseEntity<>(comments, HttpStatus.OK);
-    }
+
 
 }
