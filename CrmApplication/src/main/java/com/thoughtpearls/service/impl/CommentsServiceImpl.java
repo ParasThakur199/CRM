@@ -1,4 +1,4 @@
-package com.thoughtpearls.service.Impl;
+package com.thoughtpearls.service.impl;
 
 import com.thoughtpearls.config.JwtService;
 import com.thoughtpearls.dto.CommentsRequestDto;
