@@ -4,6 +4,7 @@ import com.thoughtpearls.config.JwtService;
 import com.thoughtpearls.dto.AuthenticationResponse;
 import com.thoughtpearls.dto.SignInDto;
 import com.thoughtpearls.dto.UserRequestDto;
+import com.thoughtpearls.exception.UserAuthenticationException;
 import com.thoughtpearls.mapper.UserMapper;
 import com.thoughtpearls.model.User;
 import com.thoughtpearls.repository.UserRepository;
@@ -34,8 +35,12 @@ public class UserServiceImpl implements UserService {
     }
 
     public AuthenticationResponse authenticate(SignInDto signInDto) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInDto.getEmail(),signInDto.getPassword()));
-        User user=userRepository.findByEmail(signInDto.getEmail()).orElseThrow();
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInDto.getEmail(), signInDto.getPassword()));
+        }catch(Exception e){
+            throw new UserAuthenticationException("Invalid email or password");
+        }
+        User user=userRepository.findByEmail(signInDto.getEmail()).orElseThrow(()->new UserAuthenticationException("User not found"));
         String jwtToken=jwtService.generateToken(user);
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
