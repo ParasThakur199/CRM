@@ -11,4 +11,6 @@ public interface CommentsService {
     public void deleteCommentById(long commentId);
 
 
+    public List<CommentsResponseDto> getAllComments(Integer pageNo, Integer pageSize, String sortBy);
+
 }

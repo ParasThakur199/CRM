@@ -34,5 +34,13 @@ public class CommentsController {
     }
 
 
+    @GetMapping("/getAll")
+    public ResponseEntity<List<CommentsResponseDto>> getAllComments(@RequestParam(defaultValue = "0") Integer pageNo,
+                                                                    @RequestParam(defaultValue = "2") Integer pageSize,
+                                                                    @RequestParam(defaultValue = "id") String sortBy) {
+        List<CommentsResponseDto> comments = commentsService.getAllComments(pageNo, pageSize, sortBy);
+        return new ResponseEntity<>(comments, HttpStatus.OK);
+    }
+
 
 }
