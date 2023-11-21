@@ -8,7 +8,12 @@ import com.thoughtpearls.model.Comments;
 import com.thoughtpearls.model.User;
 import com.thoughtpearls.repository.CommentsRepository;
 import com.thoughtpearls.service.CommentsService;
+import com.thoughtpearls.service.LeadService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,7 +25,7 @@ public class CommentsServiceImpl implements CommentsService {
     private CommentsRepository commentsRepository;
 
     @Autowired
-    private LeadServiceImpl leadService;
+    private LeadService leadService;
 
     @Autowired
     private CommentsMapper commentsMapper;
@@ -42,5 +47,15 @@ public class CommentsServiceImpl implements CommentsService {
         commentsRepository.deleteById(commentId);
     }
 
+    @Override
+    public List<CommentsResponseDto> getAllComments(Integer pageNo, Integer pageSize, String sortBy) {
+        Pageable paging= PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<Comments> pagedResult=commentsRepository.findAll(paging);
+        if(pagedResult.hasContent()) {
+            return commentsMapper.listOfEntitiesToListOfDto(pagedResult.getContent());
+        } else {
+            return null;
+        }
+    }
 
 }

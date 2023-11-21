@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/comments")
 public class CommentsController {
@@ -20,12 +22,6 @@ public class CommentsController {
         CommentsResponseDto createdComment = commentsService.createComment(commentsRequestDto, leadId,token);
         return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
     }
-
-//    @PutMapping("/update/{Id}")
-//    public ResponseEntity<CommentsResponseDto> updateComment(@PathVariable long Id, @RequestBody CommentsRequestDto commentsRequestDto) {
-//        CommentsResponseDto updatedComment = commentsService.updateComment(Id, commentsRequestDto);
-//        return new ResponseEntity<>(updatedComment, HttpStatus.OK);
-//    }
 
     @DeleteMapping("/delete/{Id}")
     public ResponseEntity<String> deleteComment(@PathVariable long Id) {
@@ -41,6 +37,5 @@ public class CommentsController {
         List<CommentsResponseDto> comments = commentsService.getAllComments(pageNo, pageSize, sortBy);
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
-
 
 }
