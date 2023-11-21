@@ -4,6 +4,8 @@ import com.thoughtpearls.config.JwtService;
 import com.thoughtpearls.dto.LeadRequestDto;
 import com.thoughtpearls.dto.LeadResponseDto;
 import com.thoughtpearls.dto.SearchParametersDto;
+import com.thoughtpearls.exception.LeadNotFoundException;
+import com.thoughtpearls.exception.TokenException;
 import com.thoughtpearls.mapper.LeadMapper;
 import com.thoughtpearls.model.Lead;
 import com.thoughtpearls.model.User;
@@ -40,6 +42,9 @@ public class LeadServiceImpl implements LeadService {
 
     public LeadResponseDto createLead(LeadRequestDto leadRequestDto,String token) {
         User user=jwtService.getUserDetailsFromToken(token);
+        if(user==null){
+            throw new TokenException("unable to retrieve user details from the provided token");
+        }
         Lead lead = leadMapper.dtoToEntity(leadRequestDto);
         lead.setCreatedBy(user.getId());
         lead.setCreatedOn(LocalDateTime.now());
@@ -50,6 +55,9 @@ public class LeadServiceImpl implements LeadService {
 
     public LeadResponseDto updateLead(long leadId, LeadRequestDto leadRequestDto,String token) {
         User user=jwtService.getUserDetailsFromToken(token);
+        if(user==null){
+            throw new TokenException("unable to retrieve user details from the provided token");
+        }
         return leadRepository.findById(leadId)
                 .map(lead -> {
                     leadMapper.updateEntityFromDto(leadRequestDto, lead);
@@ -58,7 +66,7 @@ public class LeadServiceImpl implements LeadService {
                     Lead updatedLead = leadRepository.save(lead);
                     return leadMapper.entityToDto(updatedLead);
                 })
-                .orElse(null);
+                .orElseThrow(()->new LeadNotFoundException("Lead Not Found With Id"+leadId));
     }
 
     public void deleteLead(long leadId) {
@@ -67,7 +75,7 @@ public class LeadServiceImpl implements LeadService {
 
     public Lead findLeadById(long leadId){
         Optional<Lead> optionalLead =leadRepository.findById(leadId);
-        return optionalLead.orElseThrow(()->new RuntimeException("Lead not present"));
+        return optionalLead.orElseThrow(()->new LeadNotFoundException("Lead not present with Id"+leadId));
     }
 
 public List<LeadResponseDto> getAllLeads(Integer pageNo, Integer pageSize, String sortBy){
@@ -107,13 +115,13 @@ public List<LeadResponseDto> getAllLeads(Integer pageNo, Integer pageSize, Strin
     public LeadResponseDto getLeadById(long leadId) {
         return leadRepository.findById(leadId)
                 .map(leadMapper::entityToDto)
-                .orElseThrow(() -> new RuntimeException("Lead not found with id: " + leadId));
+                .orElseThrow(() -> new LeadNotFoundException("Lead not found with id: " + leadId));
     }
 
     @Autowired
     private EmailService emailService;
 
-    @Scheduled(cron = "0 0 8 * * ?")
+    @Scheduled(cron = "0 0/1 * 1/1 * ?")
     public void sendReminderEmails() {
         Date currentDate = new Date();
         List<Lead> leadsWithUpcomingReminders = leadRepository.findByReminderDate(currentDate);

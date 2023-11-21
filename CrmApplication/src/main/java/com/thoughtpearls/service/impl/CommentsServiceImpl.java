@@ -3,6 +3,9 @@ package com.thoughtpearls.service.Impl;
 import com.thoughtpearls.config.JwtService;
 import com.thoughtpearls.dto.CommentsRequestDto;
 import com.thoughtpearls.dto.CommentsResponseDto;
+import com.thoughtpearls.exception.CommentCreationException;
+import com.thoughtpearls.exception.CommentsNotFoundException;
+import com.thoughtpearls.exception.TokenException;
 import com.thoughtpearls.mapper.CommentsMapper;
 import com.thoughtpearls.model.Comments;
 import com.thoughtpearls.model.User;
@@ -20,7 +23,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class CommentsServiceImpl implements CommentsService {
+public class
+CommentsServiceImpl implements CommentsService {
     @Autowired
     private CommentsRepository commentsRepository;
 
@@ -34,13 +38,20 @@ public class CommentsServiceImpl implements CommentsService {
     private JwtService jwtService;
 
     public CommentsResponseDto createComment(CommentsRequestDto commentsRequestDto, long leadId,String token) {
-        User user=jwtService.getUserDetailsFromToken(token);
-        Comments comments = commentsMapper.dtoToEntity(commentsRequestDto);
-        comments.setLead(leadService.findLeadById(leadId));
-        comments.setCreatedBy(user.getId());
-        comments.setCreatedOn(LocalDateTime.now());
-        Comments savedComment = commentsRepository.save(comments);
-        return commentsMapper.entityToDto(savedComment);
+        try {
+            User user = jwtService.getUserDetailsFromToken(token);
+            if (user == null) {
+                throw new TokenException("unable to retrieve user details from the provided token");
+            }
+            Comments comments = commentsMapper.dtoToEntity(commentsRequestDto);
+            comments.setLead(leadService.findLeadById(leadId));
+            comments.setCreatedBy(user.getId());
+            comments.setCreatedOn(LocalDateTime.now());
+            Comments savedComment = commentsRepository.save(comments);
+            return commentsMapper.entityToDto(savedComment);
+        }catch (CommentCreationException e){
+            throw new CommentCreationException("Comments not created "+e.getMessage());
+        }
     }
 
     public void deleteCommentById(long commentId){
@@ -54,7 +65,7 @@ public class CommentsServiceImpl implements CommentsService {
         if(pagedResult.hasContent()) {
             return commentsMapper.listOfEntitiesToListOfDto(pagedResult.getContent());
         } else {
-            return null;
+            throw new CommentsNotFoundException("No comments found");
         }
     }
 
