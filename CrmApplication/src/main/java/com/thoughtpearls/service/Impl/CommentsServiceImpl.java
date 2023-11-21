@@ -68,7 +68,7 @@ public class CommentsServiceImpl implements CommentsService {
         if(pagedResult.hasContent()) {
             return commentsMapper.listOfEntitiesToListOfDto(pagedResult.getContent());
         } else {
-            throw new CommentsNotFoundException("No comments Found");
+            throw new CommentsNotFoundException("No comments Found ");
         }
     }
 }
