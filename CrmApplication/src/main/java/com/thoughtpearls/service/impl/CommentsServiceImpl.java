@@ -23,8 +23,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class
-CommentsServiceImpl implements CommentsService {
+public class CommentsServiceImpl implements CommentsService {
     @Autowired
     private CommentsRepository commentsRepository;
 
