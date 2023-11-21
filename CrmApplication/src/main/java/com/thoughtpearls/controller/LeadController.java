@@ -4,7 +4,6 @@ import com.thoughtpearls.dto.LeadRequestDto;
 import com.thoughtpearls.dto.LeadResponseDto;
 import com.thoughtpearls.dto.SearchParametersDto;
 import com.thoughtpearls.service.LeadService;
-import com.thoughtpearls.service.impl.LeadServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
