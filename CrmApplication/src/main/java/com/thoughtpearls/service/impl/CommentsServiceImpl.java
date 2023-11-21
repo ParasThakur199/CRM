@@ -1,4 +1,4 @@
-package com.thoughtpearls.service.impl;
+package com.thoughtpearls.service.Impl;
 
 import com.thoughtpearls.config.JwtService;
 import com.thoughtpearls.dto.CommentsRequestDto;
@@ -8,6 +8,7 @@ import com.thoughtpearls.model.Comments;
 import com.thoughtpearls.model.User;
 import com.thoughtpearls.repository.CommentsRepository;
 import com.thoughtpearls.service.CommentsService;
+import com.thoughtpearls.service.LeadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class CommentsServiceImpl implements CommentsService {
     private CommentsRepository commentsRepository;
 
     @Autowired
-    private LeadServiceImpl leadService;
+    private LeadService leadService;
 
     @Autowired
     private CommentsMapper commentsMapper;
@@ -40,6 +41,11 @@ public class CommentsServiceImpl implements CommentsService {
 
     public void deleteCommentById(long commentId){
         commentsRepository.deleteById(commentId);
+    }
+
+    @Override
+    public List<CommentsResponseDto> getAllComments(Integer pageNo, Integer pageSize, String sortBy) {
+        return null;
     }
 
 
