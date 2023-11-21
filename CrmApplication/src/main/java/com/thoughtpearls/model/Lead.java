@@ -28,7 +28,8 @@ public class Lead extends AuditableAbstractClass {
     private Status status;
     @Enumerated(EnumType.STRING)
     private LeadType leadType;
-    private Date reminderDate;
+    @Temporal(TemporalType.DATE)
+    private Date reminderDate;          //DATE(remainder_date)= :date
     private String reminderTopic;
     @OneToMany(mappedBy = "lead",cascade = CascadeType.REMOVE)
     private List<Comments> comments;

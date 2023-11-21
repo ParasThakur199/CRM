@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/comments")
 public class CommentsController {
@@ -35,6 +33,7 @@ public class CommentsController {
         return new ResponseEntity<>("Comment deleted successfully", HttpStatus.OK);
     }
 
+
     @GetMapping("/getAll")
     public ResponseEntity<List<CommentsResponseDto>> getAllComments(@RequestParam(defaultValue = "0") Integer pageNo,
                                                                     @RequestParam(defaultValue = "2") Integer pageSize,
@@ -42,5 +41,6 @@ public class CommentsController {
         List<CommentsResponseDto> comments = commentsService.getAllComments(pageNo, pageSize, sortBy);
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
+
 
 }
