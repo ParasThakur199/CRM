@@ -125,7 +125,7 @@ public List<LeadResponseDto> getAllLeads(Integer pageNo, Integer pageSize, Strin
     public void sendReminderEmails() {
         Date currentDate = new Date();
         List<Lead> leadsWithUpcomingReminders = leadRepository.findByReminderDate(currentDate);
-    System.out.println("executed");
+//    System.out.println("executed");
         for (Lead lead : leadsWithUpcomingReminders) {
             String to = lead.getUser().getEmail(); // Assuming User has an email property
             String subject = "Reminder About your Lead: " + lead.getLeadName();
