@@ -38,8 +38,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(CommentsNotFoundException.class)
-    public ResponseEntity<ErrorDetails> commentsNotFoundHandler(CommentsNotFoundException e , WebRequest webRequest){
+    @ExceptionHandler(CommentNotFoundException.class)
+    public ResponseEntity<ErrorDetails> commentsNotFoundHandler(CommentNotFoundException e , WebRequest webRequest){
         ErrorDetails errorDetails = new ErrorDetails();
         errorDetails.setTimestamp(LocalDateTime.now());
         errorDetails.setMessage(e.getMessage());
@@ -49,6 +49,42 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CommentCreationException.class)
     public ResponseEntity<ErrorDetails> commentsCreationExceptionHandler(CommentCreationException e , WebRequest webRequest){
+        ErrorDetails errorDetails = new ErrorDetails();
+        errorDetails.setTimestamp(LocalDateTime.now());
+        errorDetails.setMessage(e.getMessage());
+        errorDetails.setDetails(webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorDetails> userNotFound(UserNotFoundException e , WebRequest webRequest){
+        ErrorDetails errorDetails = new ErrorDetails();
+        errorDetails.setTimestamp(LocalDateTime.now());
+        errorDetails.setMessage(e.getMessage());
+        errorDetails.setDetails(webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(StatusNotFoundException.class)
+    public ResponseEntity<ErrorDetails> userNotFound(StatusNotFoundException e , WebRequest webRequest){
+        ErrorDetails errorDetails = new ErrorDetails();
+        errorDetails.setTimestamp(LocalDateTime.now());
+        errorDetails.setMessage(e.getMessage());
+        errorDetails.setDetails(webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(LeadTypeNotFoundException.class)
+    public ResponseEntity<ErrorDetails> userNotFound(LeadTypeNotFoundException e , WebRequest webRequest){
+        ErrorDetails errorDetails = new ErrorDetails();
+        errorDetails.setTimestamp(LocalDateTime.now());
+        errorDetails.setMessage(e.getMessage());
+        errorDetails.setDetails(webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(HttpHeaderException.class)
+    public ResponseEntity<ErrorDetails> userNotFound(HttpHeaderException e , WebRequest webRequest){
         ErrorDetails errorDetails = new ErrorDetails();
         errorDetails.setTimestamp(LocalDateTime.now());
         errorDetails.setMessage(e.getMessage());

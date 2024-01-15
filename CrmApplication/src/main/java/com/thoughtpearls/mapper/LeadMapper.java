@@ -1,32 +1,31 @@
 package com.thoughtpearls.mapper;
 
-import com.thoughtpearls.dto.LeadRequestDto;
-import com.thoughtpearls.dto.LeadResponseDto;
+import com.thoughtpearls.dto.requestdto.LeadRequestDto;
+import com.thoughtpearls.dto.responsedto.LeadResponseDto;
 import com.thoughtpearls.model.Lead;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import com.thoughtpearls.repository.LeadRepository;
+import com.thoughtpearls.repository.LeadTypeRepository;
+import com.thoughtpearls.repository.StatusRepository;
+import org.mapstruct.*;
 
-import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",uses = {LeadRepository.class, LeadTypeRepository.class, StatusRepository.class})
 public interface LeadMapper {
+
     @Mapping(source="leadDescription",target="description")
-    @Mapping(source="leadStatus",target="status")
     @Mapping(source="reminderDate",target="reminderDate",dateFormat = "yyyy-MMM-dd")
+    @Mapping(target = "status", source = "statusId", ignore = true)
+    @Mapping(target = "leadType", source = "leadTypeId", ignore = true)
     Lead dtoToEntity(LeadRequestDto leadRequestDto);
+
     @Mapping(source="description",target="leadDescription")
-    @Mapping(source="status",target="leadStatus")
     @Mapping(source="reminderDate",target="reminderDate",dateFormat = "yyyy-MMM-dd")
+    @Mapping(source="createdBy",target="createdBy" ,ignore = true)
+    @Mapping(source="updatedBy",target="updatedBy" ,ignore = true)
     LeadResponseDto entityToDto(Lead lead);
 
     @Mapping(source = "leadDescription", target = "description")
-    @Mapping(source = "leadStatus", target = "status")
     @Mapping(source = "reminderDate", target = "reminderDate", dateFormat = "yyyy-MMM-dd")
     Lead updateEntityFromDto(LeadRequestDto leadRequestDto, @MappingTarget Lead lead);
-
-    List<LeadResponseDto> entityToDto(List<Lead> leads);
-
-    List<Lead> dtoToEntity(List<LeadResponseDto> leadResponseDtos);
 
 }

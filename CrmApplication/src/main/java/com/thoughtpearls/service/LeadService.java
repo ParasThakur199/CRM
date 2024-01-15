@@ -1,25 +1,26 @@
 package com.thoughtpearls.service;
 
-import com.thoughtpearls.dto.LeadRequestDto;
-import com.thoughtpearls.dto.LeadResponseDto;
-import com.thoughtpearls.dto.SearchParametersDto;
+import com.thoughtpearls.dto.SimplePage;
+import com.thoughtpearls.dto.requestdto.LeadRequestDto;
+import com.thoughtpearls.dto.requestdto.SearchParameterRequestDto;
+import com.thoughtpearls.dto.responsedto.LeadResponseDto;
 import com.thoughtpearls.model.Lead;
 import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 public interface LeadService {
     public LeadResponseDto createLead(LeadRequestDto leadRequestDto, String token);
 
-    public LeadResponseDto updateLead(long leadId, LeadRequestDto leadRequestDto,String token);
+    public SimplePage<LeadResponseDto> getAllLeads(Integer pageNo, Integer pageSize, String sortBy);
 
-    public void deleteLead(long leadId);
+    public LeadResponseDto getLeadById(Long leadId);
 
-    public Lead findLeadById(long leadId);
+    public LeadResponseDto updateLead(Long leadId, LeadRequestDto leadRequestDto, String token);
 
-    public List<LeadResponseDto> getAllLeads(Integer pageNo, Integer pageSize, String sortBy);
+    public void deleteLead(Long leadId);
 
-    public Page<LeadResponseDto> searchAndFilterInLead(final SearchParametersDto searchParametersDto);
+    public Page<LeadResponseDto> searchAndFilterInLead(final SearchParameterRequestDto searchParameterRequestDto, String token);
 
-    public LeadResponseDto getLeadById(long leadId);
+    public Lead findById(Long id);
+
+    public void existById(Long id);
 }

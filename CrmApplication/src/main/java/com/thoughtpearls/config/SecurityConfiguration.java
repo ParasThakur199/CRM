@@ -18,14 +18,17 @@ public class SecurityConfiguration {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
+    private final CorsConfig corsConfig;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf((csrf) -> csrf.disable())
+                .cors(cors->cors.configurationSource(corsConfig.corsConfigurationSource()))
                 .authorizeHttpRequests((requests)->requests
-                        .requestMatchers("/comments/**","/lead/**")
+                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/user/**","/comments/**","/lead/**","/history/**"
+                                ,"/leadType/**","/rejectingTechnology/**","/rejection/**","/status/**")
                         .hasAuthority(Role.User.name())
-                        .requestMatchers("/user/add","/user/login").permitAll()
                         .anyRequest().permitAll())
                         .sessionManagement((sessionManagement)->sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -34,5 +37,6 @@ public class SecurityConfiguration {
 
         return http.build();
     }
+
 
 }

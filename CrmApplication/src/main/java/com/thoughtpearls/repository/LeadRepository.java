@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface LeadRepository extends JpaRepository<Lead,Long>, JpaSpecificationExecutor<Lead>,PagingAndSortingRepository<Lead,Long>{
+public interface LeadRepository extends JpaRepository<Lead, Long>, JpaSpecificationExecutor<Lead>, PagingAndSortingRepository<Lead, Long> {
     List<Lead> findByReminderDate(Date currentDate);
+
 }

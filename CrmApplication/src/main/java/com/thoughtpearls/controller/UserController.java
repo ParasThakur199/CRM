@@ -1,32 +1,34 @@
 package com.thoughtpearls.controller;
 
-import com.thoughtpearls.dto.AuthenticationResponse;
-import com.thoughtpearls.dto.SignInDto;
-import com.thoughtpearls.dto.UserRequestDto;
-import com.thoughtpearls.service.Impl.UserServiceImpl;
+import com.thoughtpearls.dto.requestdto.UserRequestDto;
+import com.thoughtpearls.dto.responsedto.UserResponseDto;
+import com.thoughtpearls.service.UserService;
+import com.thoughtpearls.dto.SimplePage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
 
-    @PostMapping("/add")
-    public void addUser(@RequestBody UserRequestDto userRequestDto)
-    {
-        userService.addUser(userRequestDto);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserResponseDto> addUser(@ModelAttribute UserRequestDto userRequestDto) throws IOException {
+        return new ResponseEntity<>(userService.addUser(userRequestDto), HttpStatus.CREATED);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> signIn(@RequestBody
-                                                             SignInDto signInDto)
-    {
-        return ResponseEntity.ok(userService.authenticate(signInDto));
+    @GetMapping
+    public ResponseEntity<SimplePage<UserResponseDto>> getAllUser(@RequestParam(defaultValue = "${pageNo}") Integer pageNo,
+                                                                  @RequestParam(defaultValue = "${pageSize}") Integer pageSize,
+                                                                  @RequestParam(defaultValue = "${sortById}") String sortBy) {
+        return new ResponseEntity<>(userService.getAllUser(pageNo, pageSize, sortBy), HttpStatus.OK);
     }
+
+
 }

@@ -1,11 +1,7 @@
 package com.thoughtpearls.config;
 
+import com.thoughtpearls.exception.ExceptionMessage;
 import com.thoughtpearls.repository.UserRepository;
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
-import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +23,7 @@ public class ApplicationConfig {
     public UserDetailsService userDetailsService()
     {
         return username ->userRepository.findByEmail(username)
-                .orElseThrow(()-> new UsernameNotFoundException("User not Found"));
+                .orElseThrow(()-> new UsernameNotFoundException(ExceptionMessage.userNotFound));
     }
 
     @Bean
@@ -47,18 +43,4 @@ public class ApplicationConfig {
        return new BCryptPasswordEncoder();
     }
 
-    private SecurityScheme createAPIKeyScheme() {
-        return new SecurityScheme().type(SecurityScheme.Type.HTTP)
-                .bearerFormat("JWT")
-                .scheme("bearer");
-    }
-    @Bean
-    public OpenAPI openAPI() {
-        return new OpenAPI().addSecurityItem(new SecurityRequirement().
-                        addList("Bearer Authentication"))
-                .components(new Components().addSecuritySchemes
-                        ("Bearer Authentication", createAPIKeyScheme()))
-                .info(new Info().title("CRM")
-                        .description("Managing Leads by the User"));
-    }
 }

@@ -1,12 +1,7 @@
 package com.thoughtpearls.model;
 
-import com.thoughtpearls.enums.LeadType;
-import com.thoughtpearls.enums.Status;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
@@ -16,24 +11,41 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Leads")
+@Builder
+@Table(name = "LeadInfo")
 public class Lead extends AuditableAbstractClass {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+
     private String leadName;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
+
     private String link;
-    @Enumerated(EnumType.STRING)
-    private Status status;
-    @Enumerated(EnumType.STRING)
-    private LeadType leadType;
+
     @Temporal(TemporalType.DATE)
     private Date reminderDate;          //DATE(remainder_date)= :date
+
     private String reminderTopic;
-    @OneToMany(mappedBy = "lead",cascade = CascadeType.REMOVE)
-    private List<Comments> comments;
+
+    @OneToMany(mappedBy = "lead", cascade = CascadeType.REMOVE)
+    private List<Comment> comments;
+
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "userId")
     private User user;
+
+    @OneToMany(mappedBy = "lead", cascade = CascadeType.REMOVE)
+    private List<LeadStatusHistory> leadStatusHistories;
+
+    @OneToOne(mappedBy = "lead")
+    private Rejection rejection;
+
+    @ManyToOne
+    @JoinColumn(name = "statusId")
+    private Status status;
+
+    @ManyToOne
+    @JoinColumn(name = "leadTypeId")
+    private LeadType leadType;
+
 }

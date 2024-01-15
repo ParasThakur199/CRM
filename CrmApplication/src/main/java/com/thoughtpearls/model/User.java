@@ -12,24 +12,37 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "loginUser")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String firstName;
     private String lastName;
     @Column(unique = true)
     private String email;
     private String password;
+    private String imagePath;
     @Enumerated(EnumType.STRING)
-    private Role role= Role.User;
-    @OneToMany(mappedBy = "user",cascade = CascadeType.DETACH)
+    private Role role = Role.User;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.DETACH)
     private List<Lead> leads;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.DETACH)
+    private List<LeadStatusHistory> leadStatusHistories;
+
+    public User(String firstName, String lastName, String email, String password, Role role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -40,9 +53,9 @@ public class User implements UserDetails {
     public String getUsername() {
         return email;
     }
+
     @Override
-    public String getPassword()
-    {
+    public String getPassword() {
         return password;
     }
 
